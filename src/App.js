@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import Tabs from './Components/Tabs';
 import Transactions from './Components/Transactions';
+import TransactionDetails from './Components/Transaction_detail';
 
 export default function App() {
   return (
@@ -17,6 +18,9 @@ export default function App() {
         </Route>
         <Route path="/sell">
           <Transactions />
+        </Route>
+        <Route path="/list/:id">
+          <TransactionDetails />
         </Route>
         <Route path="/">
           <Transactions />

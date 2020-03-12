@@ -20,22 +20,19 @@ const columns = [
     format: (value) => value.toLocaleString(),
   },
   { id: 'date', label: 'Date de mise en vente', minWidth: 100 },
-  { id: 'buyerId', label: 'Acheteur', minWidth: 170 },
   { id: 'sellerId', label: 'Vendeur', minWidth: 100 },
 ];
 
-function createData(id, type, price, date, buyerId, sellerId) {
+function createData(id, type, price, date, sellerId) {
   return {
-    id, type, price, date, buyerId, sellerId
+    id, type, price, date, sellerId
   };
 }
 
 const rows = [
-//  createData(1, 'appartment', '122132131', 'EDA2E1213213', 13500, '35 rue des fdp, Paris', 150, '31/05/2020', 10),
-  //createData(2, 'appartment', 'dazdzaaz', 'azeffzafzazaea', 13500, '37 rue des fdp, Paris', 150, '31/05/2020', 15),
-  createData(1, 'appartment',135000, '31/02/2020', 'adzpdnaz3azdpna', 'adazdazdzazda'),
-  createData(2, 'maison',35000, '25/02/2020', 'adzpdnaz3azdpna', 'adazdazdzazda'),
-  createData(3, 'hotel',1000000, '10/02/2020', 'adzpdnaz3azdpna', 'adazdazdzazda'),
+  createData(1, 'appartment',135000, '11/02/2020', 'adzpdnaz3azdpna'),
+  createData(2, 'maison',35000, '15/01/2020', 'adzpdnaz3azdpna'),
+  createData(3, 'hotel',1000000, '06/01/2020', 'adzpdnaz3azdpna'),
 ];
 
 const useStyles = makeStyles({
@@ -80,7 +77,7 @@ export default function StickyHeadTable() {
           </TableHead>
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => (
-              <TableRow component={Link} to={`/transaction/${row.id}`} key={`list:${i}`} hover role="checkbox" tabIndex={-1}>
+              <TableRow component={Link} to={`/buy/${row.id}`} key={`vente:${i}`} hover role="checkbox" tabIndex={-1}>
                 {columns.map((column) => {
                   const value = row[column.id];
                   return (

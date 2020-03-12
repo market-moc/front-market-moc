@@ -24,13 +24,13 @@ const useStyles = makeStyles({
 });
 
 const data = {
-  type: 'appartment',
-  buyerId: 'fazazdzadzazdazdzaad',
-  sellerId: 'dazdzadzadzazaaz',
+  type: 'hotel',
+  buyerId: 'dazdzaza',
+  sellerId: 'azezaea',
   price: 150000,
-  address: '37 rue des fdp, Paris',
+  address: '37 azeza des fdp, Paris',
   density: 150,
-  date: '31/05/2020',
+  date: '11/05/2020',
   nbRooms: 10,
 };
 
@@ -59,10 +59,11 @@ export default function SimpleCard() {
         marginTop: 150,
       }}
     >
-      <Button variant="contained" component={Link} to="/" color="primary" style={{ marginTop: 15 }}>Retour</Button>
+      <Button variant="contained" component={Link} to="/buy" color="primary" style={{ marginTop: 15 }}>Retour</Button>
       <CardContent>
         { showData(data, classes) }
       </CardContent>
+      <Button variant="contained" component={Link} to="/buy" color="primary" style={{ marginBottom: 15, backgroundColor: 'rgba(5, 121, 24, 0.73)' }}>Acheter</Button>
     </Card>
   );
 }

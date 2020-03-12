@@ -7,20 +7,26 @@ import {
 import Tabs from './Components/Tabs';
 import Transactions from './Components/Transactions';
 import TransactionDetails from './Components/Transaction_detail';
+import Ventes from './Components/Buys';
+import VenteDetail from './Components/Buy_detail';
+import Sell from './Components/Sell';
 
 export default function App() {
   return (
     <Router>
       <Tabs />
       <Switch>
-        <Route path="/buy">
-          <Transactions />
+        <Route exact path="/buy">
+          <Ventes />
         </Route>
         <Route path="/sell">
-          <Transactions />
+          <Sell />
         </Route>
-        <Route path="/list/:id">
+        <Route path="/transaction/:id">
           <TransactionDetails />
+        </Route>
+        <Route path="/buy/:id">
+          <VenteDetail />
         </Route>
         <Route path="/">
           <Transactions />

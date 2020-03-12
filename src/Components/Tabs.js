@@ -62,7 +62,7 @@ export default function NavTabs() {
           onChange={handleChange}
           aria-label="nav tabs example"
         >
-          <Tab label="Liste" to="/" component={Link} {...a11yProps(0)} />
+          <Tab label="Transactions" to="/" component={Link} {...a11yProps(0)} />
           <Tab label="Acheter" to="/buy" component={Link} {...a11yProps(1)} />
           <Tab label="Vendre" to="/sell" component={Link} {...a11yProps(2)} />
         </Tabs>

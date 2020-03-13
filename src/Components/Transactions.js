@@ -9,6 +9,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import { Link } from 'react-router-dom';
+import Web3 from 'web3';
+import { abi, contractAddress } from '../solidity';
 
 const columns = [
   { id: 'type', label: 'Type', minWidth: 170 },
@@ -47,7 +49,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function StickyHeadTable() {
+function StickyHeadTable(props) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -105,4 +107,34 @@ export default function StickyHeadTable() {
       />
     </Paper>
   );
+}
+
+export default class Transactions extends React.Component {
+
+  constructor() {
+    super();
+    this.loadBlockchainData()
+    this.getData();
+    this.state = {data: null};
+  }
+
+  getData = async () => {
+    const web3 = new Web3(Web3.givenProvider || 'mainnet.infura.io/v3/c7c35e6b63c047bca77641a6b4949bf3');
+    const contract = new web3.eth.Contract(abi, contractAddress);
+    const data =  await contract.methods.getTransaction().call();
+    console.log(data);
+  };
+
+  async loadBlockchainData() {
+    const web3 = new Web3(Web3.givenProvider || 'mainnet.infura.io/v3/c7c35e6b63c047bca77641a6b4949bf3');
+    const accounts = await web3.eth.getAccounts();
+    this.setState({ account: accounts[0] });
+  }
+
+
+  render() {
+    return (
+      <StickyHeadTable />
+    );
+  }
 }

@@ -9,6 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import { Link } from 'react-router-dom';
+import Web3 from 'web3';
+import { abi, contractAddress } from '../solidity';
+
 
 const columns = [
   { id: 'type', label: 'Type', minWidth: 170 },
@@ -19,21 +22,17 @@ const columns = [
     align: 'right',
     format: (value) => value.toLocaleString(),
   },
-  { id: 'date', label: 'Date de mise en vente', minWidth: 100 },
-  { id: 'sellerId', label: 'Vendeur', minWidth: 100 },
+  { id: 'address', label: 'Adresse', minWidth: 100 },
+  { id: 'surface', label: 'Surface', minWidth: 100 },
+  { id: 'description', label: 'Description', minWidth: 100 },
 ];
 
-function createData(id, type, price, date, sellerId) {
+function createData(type, price, address, surface, description) {
   return {
-    id, type, price, date, sellerId
+    type, price, address, surface, description,
   };
 }
 
-const rows = [
-  createData(1, 'appartment',135000, '11/02/2020', 'adzpdnaz3azdpna'),
-  createData(2, 'maison',35000, '15/01/2020', 'adzpdnaz3azdpna'),
-  createData(3, 'hotel',1000000, '06/01/2020', 'adzpdnaz3azdpna'),
-];
 
 const useStyles = makeStyles({
   root: {
@@ -44,7 +43,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function StickyHeadTable() {
+function StickyHeadTable(props) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -53,11 +52,12 @@ export default function StickyHeadTable() {
     setPage(newPage);
   };
 
+  const rows = props.data.map((house) => createData(...house));
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
@@ -77,7 +77,7 @@ export default function StickyHeadTable() {
           </TableHead>
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => (
-              <TableRow component={Link} to={`/buy/${row.id}`} key={`vente:${i}`} hover role="checkbox" tabIndex={-1}>
+              <TableRow component={Link} to={`/buy/${i}`} key={`vente:${i}`} hover role="checkbox" tabIndex={-1}>
                 {columns.map((column) => {
                   const value = row[column.id];
                   return (
@@ -102,4 +102,32 @@ export default function StickyHeadTable() {
       />
     </Paper>
   );
+}
+
+export default class Buys extends React.Component {
+  constructor() {
+    super();
+    this.state = {houses: []};
+    this.loadBlockchainData();
+    this.getData();
+  }
+
+  async loadBlockchainData() {
+    const web3 = new Web3(Web3.givenProvider || 'mainnet.infura.io/v3/c7c35e6b63c047bca77641a6b4949bf3');
+    const accounts = await web3.eth.getAccounts();
+    this.setState({ account: accounts[0] });
+  }
+
+  async getData() {
+    const web3 = new Web3(Web3.givenProvider || 'mainnet.infura.io/v3/c7c35e6b63c047bca77641a6b4949bf3');
+    const contract = new web3.eth.Contract(abi, contractAddress);
+    const houses = await contract.methods.getHouses().call();
+    this.setState({ houses });
+  }
+
+  render() {
+    return (
+      <StickyHeadTable data={this.state.houses} />
+    );
+  }
 }
